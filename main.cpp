@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 
 void menu(){
@@ -14,10 +15,45 @@ void menu(){
 	
 }
 
+struct arquivo{
+	string nome;
+	char sexo;
+	string nacionalidade;
+	short nascimento;
+	string genero;
+};
+
 int main(){
 	ifstream entrada("entrada.csv");
-	ofstream saida ("saida.csv");
 
+	if(!entrada.is_open()){
+		cout<<"Erro ao abrir o arquivo!"<<endl;
+		return 0;
+	}else{
+		menu();
+	}
+
+	int capacidade=40, tamanho=0;
+	arquivo *lista=new arquivo[capacidade];
+	arquivo temp;
+	char lixo;
+
+	while(getline(entrada,temp.nome,';')){
+		entrada>>temp.sexo>>lixo;
+		getline(entrada,temp.nacionalidade,';');
+		entrada>>temp.nascimento>>lixo;
+		getline(entrada,temp.genero);
+						if(capacidade==tamanho){
+							arquivo *novaLista=new arquivo[capacidade+10];
+							copy(lista, lista + capacidade, novaLista);
+							delete[] lista;
+							lista=novaLista;
+							capacidade+=10;
+						}
+						lista[tamanho]=temp;
+						tamanho++;
+					}
+			
 
   return 0;
 
