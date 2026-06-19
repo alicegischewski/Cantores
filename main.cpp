@@ -81,60 +81,6 @@ void removerCantor(cantores lista[], int &tamanho){
 			}
 }
 
-void buscarCantor(cantores lista[], int tamanho){
-	string busca;
-	cout<<"Deseja buscar registro por nome, sexo, nacionalidade, ano de nascimento ou genero musical?"<<endl;
-	cin>>busca;
-		if(busca=="Nome" or busca=="nome"){
-			cout<<"Digite o nome: ";
-			string nomeProcurado;
-			cin.ignore();
-			getline(cin, nomeProcurado);
-			int pos=-1;
-			bool encontrou=false;
-				for(int i=0;i<tamanho and encontrou==false;i++){
-					if(lista[i].nome==nomeProcurado){
-						pos=i;
-						encontrou=true;
-					}
-				}
-					if(pos==-1){
-						cout<<"Cantor(a) nao encontrado(a)!"<<endl;
-					}else{
-						cout<<"Deseja procurar quais informacoes?(posicao, sexo, nacionalidade, ano de nascimento, genero musical ou todos): "<<endl;
-						string info;
-						getline(cin, info);
-
-						if(info=="posicao"){
-							cout<<"Posicao: "<<(pos+1)<<endl;
-						}
-						else if(info=="sexo"){
-							cout<<"Sexo: "<<lista[pos].sexo<<endl;
-						}
-						else if(info=="nacionalidade"){
-							cout<<"Nacionalidade: "<<lista[pos].nacionalidade<<endl;
-						}
-						else if(info=="ano de nascimento"){
-							cout<<"Ano de nascimento: "<<lista[pos].nascimento<<endl;
-						}
-						else if(info=="genero musical"){
-							cout<<"Genero musical: "<<lista[pos].genero<<endl;
-						}
-						else if(info=="todos"){
-						cout<<"Posicao: "<<(pos+1)<<endl
-						<<"Nome: "<<lista[pos].nome<<endl
-						<<"Sexo: "<<lista[pos].sexo<<endl
-						<<"Nacionalidade: "<<lista[pos].nacionalidade<<endl
-						<<"Ano de nascimento: "<<lista[pos].nascimento<<endl
-						<<"Genero musical: "<<lista[pos].genero<<endl;
-						}
-						else{
-							cout<<"Informacao invalida!"<<endl;
-						}
-					}
-			}
-}
-
 void selectionSort(cantores lista[], int tamanho){
 	int menor;
 	cantores aux;
@@ -152,6 +98,140 @@ void selectionSort(cantores lista[], int tamanho){
 	}
 
 }
+
+int buscaBinaria(cantores lista[], int posIni, int posFin, string procurado){
+	int meio=(posIni+posFin)/2;
+	
+	if(lista[meio].nome==procurado){
+		return meio;
+	}
+	else if(posIni<=posFin){
+		if(procurado>lista[meio].nome){
+			return buscaBinaria(lista,meio+1,posFin,procurado);
+		}else{
+			return buscaBinaria(lista,posIni, meio-1,procurado);
+		}
+	}else{
+		return -1;
+	}
+
+}
+
+void buscarCantor(cantores lista[], int tamanho){
+	string busca;
+	cout<<"Deseja buscar registro por Nome, Sexo, Nacionalidade, Ano de nascimento ou Genero musical?"<<endl;
+	cin.ignore();
+	getline(cin, busca);
+		if(busca=="Nome" or busca=="nome"){
+			cout<<"Digite o nome: ";
+			string nomeProcurado;
+			getline(cin, nomeProcurado);
+			
+			selectionSort(lista, tamanho);
+
+			int pos = buscaBinaria(lista, 0, tamanho-1, nomeProcurado);
+				
+					if(pos==-1){
+						cout<<"Cantor(a) nao encontrado(a)!"<<endl;
+					}else{
+						cout<<"---------------------------------------------"<<endl
+						<<"Posicao: "<<(pos+1)<<endl
+						<<"Nome: "<<lista[pos].nome<<endl
+						<<"Sexo: "<<lista[pos].sexo<<endl
+						<<"Nacionalidade: "<<lista[pos].nacionalidade<<endl
+						<<"Ano de nascimento: "<<lista[pos].nascimento<<endl
+						<<"Genero musical: "<<lista[pos].genero<<endl;
+						
+					}
+			}
+		else if(busca=="Sexo" or busca=="sexo"){
+			cout<<"Digite o sexo que deseja buscar: ";
+			char escolha;
+			cin>>escolha;
+			bool encontrou=false;
+
+			for(int i=0;i<tamanho;i++){
+				if(lista[i].sexo==escolha){
+					encontrou=true;
+
+					cout<<"---------------------------------------------"<<endl
+						<<"Nome: "<<lista[i].nome<<endl
+						<<"Nacionalidade: "<<lista[i].nacionalidade<<endl
+						<<"Ano de nascimento: "<<lista[i].nascimento<<endl
+						<<"Genero musical: "<<lista[i].genero<<endl;
+				}
+			}
+			if(encontrou==false){
+				cout<<"Sexo nao encontrado!"<<endl;
+			}
+				
+		}
+		else if(busca=="nacionalidade" or busca=="Nacionalidade"){
+			cout<<"Digite a nacionalidade que deseja buscar: ";
+			string escolha;
+			getline(cin, escolha);
+			bool encontrou=false;
+			for(int i=0;i<tamanho;i++){
+				if(lista[i].nacionalidade==escolha){
+					encontrou=true;
+
+					cout<<"---------------------------------------------"<<endl
+						<<"Nome: "<<lista[i].nome<<endl
+						<<"Sexo: "<<lista[i].sexo<<endl
+						<<"Ano de nascimento: "<<lista[i].nascimento<<endl
+						<<"Genero musical: "<<lista[i].genero<<endl;
+				}
+			}
+			if(encontrou==false){
+				cout<<"Nacionalidade nao encontrada!"<<endl;
+			}
+		}
+		else if(busca=="ano de nascimento" or busca=="Ano de nascimento"){
+			cout<<"Digite o ano de nascimento que deseja buscar: ";
+			short escolha;
+			cin>>escolha;
+			bool encontrou=false;
+			for(int i=0;i<tamanho;i++){
+				if(lista[i].nascimento==escolha){
+						encontrou=true;
+
+					cout<<"---------------------------------------------"<<endl
+						<<"Nome: "<<lista[i].nome<<endl
+						<<"Sexo: "<<lista[i].sexo<<endl
+						<<"Nacionalidade: "<<lista[i].nacionalidade<<endl
+						<<"Genero musical: "<<lista[i].genero<<endl;
+
+				}
+			}
+			if(encontrou==false){
+				cout<<"Ano de nascimento nao encontrado!"<<endl;
+			}
+		}
+		else if(busca=="Genero musical" or busca=="genero musical"){
+			cout<<"Digite o genero muscial que deseja buscar: ";
+			string escolha;
+			cin.ignore();
+			getline(cin, escolha);
+			bool encontrou=false;
+
+			for(int i=0;i<tamanho;i++){
+				if(lista[i].genero==escolha){
+						encontrou=true;
+
+					cout<<"---------------------------------------------"<<endl
+						<<"Nome: "<<lista[i].nome<<endl
+						<<"Sexo: "<<lista[i].sexo<<endl
+						<<"Nacionalidade: "<<lista[i].nacionalidade<<endl
+						<<"Ano de nascimento: "<<lista[i].nascimento<<endl;
+				}
+			}
+			if(encontrou==false){
+				cout<<"Genero musical nao encontrado!"<<endl;
+			}
+		}
+	}	
+
+
 
 void salvarAlteracoes(cantores lista[], int tamanho){
 	ofstream saida("cantores.csv");
