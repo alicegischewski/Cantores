@@ -1,4 +1,4 @@
-/*  Integrantes: Helena de Godoy, Julia Abreu e Alice Gischewski
+/*  Integrantes: Helena de Godoy, Julia Abreu, Alice Gischewski
 	Turma: 14A
 	Tema: Cantores	
 */
