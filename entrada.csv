@@ -1,5 +1,2 @@
-//Cantores
-//nome; sexo; nacionalidade; ano nascimento; genero musical
-
 nome; sexo; nacionalidade; nascimento; genero
-"Taylor Swift"; 'F'; "Estados Unidos"; 1989; "Pop"
+"Taylor Swift"; 'F'; "Americana"; 1989; "Pop"
