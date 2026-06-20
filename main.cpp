@@ -1,3 +1,8 @@
+/*  Integrantes: Helena de Godoy, Julia Abreu e Alice Gischewski
+	Turma: 14A
+	Tema: Cantores	
+*/
+
 #include <iostream>
 #include <string>
 #include <fstream>
