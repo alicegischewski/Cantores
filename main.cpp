@@ -112,7 +112,34 @@ void selectionSort(cantores lista[], int tamanho, int opcao){
 			lista[i]=lista[menor];
 			lista[menor]=aux;
 		}
-	}else{
+	}
+	else if(opcao==3){
+		for(int i=0;i<tamanho-1;i++){
+			menor=i;
+			for(int j=i+1;j<tamanho;j++){
+				if(lista[j].nacionalidade<lista[menor].nacionalidade){
+					menor=j;
+				}
+			}
+			aux=lista[i];
+			lista[i]=lista[menor];
+			lista[menor]=aux;
+		}
+	}
+	else if(opcao==4){
+		for(int i=0;i<tamanho-1;i++){
+			menor=i;
+			for(int j=i+1;j<tamanho;j++){
+				if(lista[j].genero<lista[menor].genero){
+					menor=j;
+				}
+			}
+			aux=lista[i];
+			lista[i]=lista[menor];
+			lista[menor]=aux;
+		}
+	}
+	else{
 		cout<<"Opcao invalida!"<<endl;
 		cout<<endl;
 	}
@@ -335,6 +362,7 @@ int main(){
 	do{
 		menu();
 		cin>>opcao;
+		cout<<endl;
 
 		if(opcao==1){
 			inserirCantor(lista, tamanho, capacidade);
@@ -349,8 +377,11 @@ int main(){
 			int opcao;
 
 			cout<<"Como deseja ordenar?"<<endl;
+			cout<<endl;
 			cout<<"1- Ordenar por nome."<<endl;
 			cout<<"2- Ordenar por idade."<<endl;
+			cout<<"3- Ordenar por nacionalidade."<<endl;
+			cout<<"4- Ordenar por genero musical."<<endl;
 			cout<<"Digite uma opcao: ";
 			cin>>opcao;
 			cout<<"Cantores ordenados!"<<endl;
