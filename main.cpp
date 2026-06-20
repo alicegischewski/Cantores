@@ -1,3 +1,7 @@
+//Integrantes: Alice ?, Helena de Godoy, Júlia Abreu de Araújo
+//Turma 14A
+//Tema: cantores
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -12,7 +16,6 @@ void menu(){
 	cout<<"5- Vizualizar dados"<<endl;
 	cout<<"6- Salvar alteracoes."<<endl;
 	cout<<"7- Sair"<<endl;
-	
 }
 
 struct arquivo{
