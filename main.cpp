@@ -9,6 +9,7 @@
 #include <algorithm>
 using namespace std;
 
+//estrutura para armazenar dados sobre os cantores
 struct cantores{
 	string nome;
 	char sexo;
@@ -24,6 +25,8 @@ void inserirCantor(cantores *&lista, int &tamanho, int &capacidade){
 	cin.ignore();
 	getline(cin, novo.nome);
 
+
+	//verifica se o cantor já foi registrado
 	bool jaExiste=false;
 
 	for(int i=0;i<tamanho and jaExiste==false;i++){
@@ -48,18 +51,21 @@ void inserirCantor(cantores *&lista, int &tamanho, int &capacidade){
 	cin.ignore();
 	getline(cin, novo.genero);
 
-		if(tamanho==capacidade){
-			cantores *novaLista=new cantores[capacidade+10];
-			copy(lista, lista+tamanho, novaLista);
-			delete[] lista;
-			lista=novaLista;
-			capacidade+=10;
-		}
-		lista[tamanho]=novo;
-		tamanho++;
 
-		cout<<"Cantor(a) registrado!"<<endl;
-		cout<<endl;
+	//se atingir o limite do vetor, são adicionados 10 espaços
+	if(tamanho==capacidade){
+		cantores *novaLista=new cantores[capacidade+10]; //novo vetor é criado
+		copy(lista, lista+tamanho, novaLista); //itens sao copiados do antigo para o novo
+		delete[] lista; //vetor antigo é liberado
+		lista=novaLista; //vetor antigo recebe os dados atualizados
+		capacidade+=10; //capacidade do vetor é atualizada
+	}
+	
+	lista[tamanho]=novo; //inserção do novo artista na lista
+	tamanho++; //atualização do tamanho da lista 
+
+	cout<<"Cantor(a) registrado!"<<endl;
+	cout<<endl;
 }
 
 void removerCantor(cantores lista[], int &tamanho){
@@ -70,42 +76,49 @@ void removerCantor(cantores lista[], int &tamanho){
 
 	int pos=-1;
 	bool encontrou=false;
-		for(int i=0;i<tamanho and encontrou==false;i++){
-			if(lista[i].nome==nomeRemovido){
-				pos=i;
-				encontrou=true;
-				}
-			}
-			if(pos==-1){
-				cout<<"Cantor(a) nao encontrado(a)."<<endl;
-			}else{
-				for(int j=pos;j<tamanho-1;j++){
-				lista[j]=lista[j+1];
-				}
-				tamanho--;
-				cout<<"Cantor(a) removido(a)!"<<endl;
-			}
-			cout<<endl;
+
+	//procura o nome que vai ser removido
+	for(int i=0;i<tamanho and encontrou==false;i++){
+		if(lista[i].nome==nomeRemovido){
+			pos=i;
+			encontrou=true;
+		}
+	}
+	
+	//se o valor de pos permanecer -1 o cantor não foi encontrado
+	//se não, entra no else
+	if(pos==-1){
+		cout<<"Cantor(a) nao encontrado(a)."<<endl;
+	}else{
+		for(int j=pos;j<tamanho-1;j++){
+			lista[j]=lista[j+1]; //cantor do vetor seguinte é copiado no vetor do cantor a ser removido até o fim da lista (ultima posição duplicada é ignorada)
+		}
+		tamanho--;
+		cout<<"Cantor(a) removido(a)!"<<endl;
+	}
+	cout<<endl;
 }
 
 void selectionSort(cantores lista[], int tamanho, int opcao){
 	int menor;
 	cantores aux;
 
-	if (opcao==1){
+	if (opcao==1){ //ordenação por nome
 		for(int i=0;i<tamanho-1;i++){
 			menor=i;
 			for(int j=i+1;j<tamanho;j++){
 				if(lista[j].nome<lista[menor].nome){
 					menor=j;
 				}
+			
 			}
 			aux=lista[i];
 			lista[i]=lista[menor];
 			lista[menor]=aux;
+			//quando o programa encontra um menor, ele troca o registro inteiro 
 		}
 	}
-	else if(opcao==2){
+	else if(opcao==2){ //ordenação por idade
 		for(int i=0;i<tamanho-1;i++){
 			menor=i;
 			for(int j=i+1;j<tamanho;j++){
@@ -118,7 +131,7 @@ void selectionSort(cantores lista[], int tamanho, int opcao){
 			lista[menor]=aux;
 		}
 	}
-	else if(opcao==3){
+	else if(opcao==3){ //ordenação por nacionalidade
 		for(int i=0;i<tamanho-1;i++){
 			menor=i;
 			for(int j=i+1;j<tamanho;j++){
@@ -131,7 +144,7 @@ void selectionSort(cantores lista[], int tamanho, int opcao){
 			lista[menor]=aux;
 		}
 	}
-	else if(opcao==4){
+	else if(opcao==4){ //ordenação por nacionalidade
 		for(int i=0;i<tamanho-1;i++){
 			menor=i;
 			for(int j=i+1;j<tamanho;j++){
@@ -151,12 +164,14 @@ void selectionSort(cantores lista[], int tamanho, int opcao){
 }
 
 void imprimirInfo(cantores lista[], int pos){
+	//imprime todas as informações de uma dada posição da lista 
+
 	cout<<"---------------------------------------------"<<endl
-			<<"Nome: "<<lista[pos].nome<<endl
-			<<"Sexo: "<<lista[pos].sexo<<endl
-			<<"Nacionalidade: "<<lista[pos].nacionalidade<<endl
-			<<"Ano de nascimento: "<<lista[pos].nascimento<<endl
-			<<"Genero musical: "<<lista[pos].genero<<endl;
+	<<"Nome: "<<lista[pos].nome<<endl
+	<<"Sexo: "<<lista[pos].sexo<<endl
+	<<"Nacionalidade: "<<lista[pos].nacionalidade<<endl
+	<<"Ano de nascimento: "<<lista[pos].nascimento<<endl
+	<<"Genero musical: "<<lista[pos].genero<<endl;
 }
 
 void buscarCantor(cantores lista[], int tamanho){
@@ -164,110 +179,109 @@ void buscarCantor(cantores lista[], int tamanho){
 	cout<<"Deseja buscar registro por Nome, Sexo, Nacionalidade, Ano de nascimento ou Genero musical?"<<endl;
 	cin.ignore();
 	getline(cin, busca);
-		if(busca=="Nome" or busca=="nome"){
-			cout<<"Digite o nome: ";
-			string nomeProcurado;
-			getline(cin, nomeProcurado);
+	if(busca=="Nome" or busca=="nome"){
+		cout<<"Digite o nome: ";
+		string nomeProcurado;
+		getline(cin, nomeProcurado);
 			
-			bool encontrou=false;
+		bool encontrou=false;
 
-			for(int i=0;i<tamanho;i++){
-				if(lista[i].nome==nomeProcurado){
-					encontrou=true;
-					imprimirInfo(lista, i);
-				}
-			}
-			if(encontrou==false){
-				cout<<"Nome nao encontrado!"<<endl;
+		for(int i=0;i<tamanho;i++){ //chama a função "imprimirInfo" quando encontra a pesquisa na lista 
+			if(lista[i].nome==nomeProcurado){
+				encontrou=true;
+				imprimirInfo(lista, i);
 			}
 		}
-		else if(busca=="Sexo" or busca=="sexo"){
-			cout<<"Digite o sexo que deseja buscar(F/M): ";
-			char escolha;
-			cin>>escolha;
-			bool encontrou=false;
-
-			for(int i=0;i<tamanho;i++){
-				if(lista[i].sexo==escolha){
-					encontrou=true;
-					imprimirInfo(lista, i);
-				}
-			}
-			if(encontrou==false){
-				cout<<"Sexo nao encontrado!"<<endl;
-			}
-				
+		if(encontrou==false){
+			cout<<"Nome nao encontrado!"<<endl;
 		}
-		else if(busca=="nacionalidade" or busca=="Nacionalidade"){
-			cout<<"Digite a nacionalidade que deseja buscar: ";
-			string escolha;
-			getline(cin, escolha);
+	}
+	else if(busca=="Sexo" or busca=="sexo"){
+		cout<<"Digite o sexo que deseja buscar(F/M): ";
+		char escolha;
+		cin>>escolha;
+		bool encontrou=false;
 
-			bool encontrou=false;
-			for(int i=0;i<tamanho;i++){
-				if(lista[i].nacionalidade==escolha){
-					encontrou=true;
-					imprimirInfo(lista, i);
-				}
-			}
-			if(encontrou==false){
-				cout<<"Nacionalidade nao encontrada!"<<endl;
+		for(int i=0;i<tamanho;i++){
+			if(lista[i].sexo==escolha){
+				encontrou=true;
+				imprimirInfo(lista, i);
 			}
 		}
-		else if(busca=="ano de nascimento" or busca=="Ano de nascimento"){
-			cout<<"Digite o ano de nascimento que deseja buscar: ";
-			short escolha;
-			cin>>escolha;
-			bool encontrou=false;
-			for(int i=0;i<tamanho;i++){
-				if(lista[i].nascimento==escolha){
-						encontrou=true;
-					imprimirInfo(lista, i);
-				}
-			}
-			if(encontrou==false){
-				cout<<"Ano de nascimento nao encontrado!"<<endl;
+		if(encontrou==false){
+			cout<<"Sexo nao encontrado!"<<endl;
+		}
+	}
+	else if(busca=="nacionalidade" or busca=="Nacionalidade"){
+		cout<<"Digite a nacionalidade que deseja buscar: ";
+		string escolha;
+		getline(cin, escolha);
+
+		bool encontrou=false;
+		for(int i=0;i<tamanho;i++){
+			if(lista[i].nacionalidade==escolha){
+				encontrou=true;
+				imprimirInfo(lista, i);
 			}
 		}
-		else if(busca=="Genero musical" or busca=="genero musical"){
-			cout<<"Digite o genero muscial que deseja buscar: ";
-			string escolha;
-			getline(cin, escolha);
-
-			bool encontrou=false;
-
-			for(int i=0;i<tamanho;i++){
-				if(lista[i].genero==escolha){
-						encontrou=true;
-					imprimirInfo(lista, i);
-				}
-			}
-			if(encontrou==false){
-				cout<<"Genero musical nao encontrado!"<<endl;
-			}
-		}else{
-			cout<<"Busca invalida!"<<endl;
+		if(encontrou==false){
+			cout<<"Nacionalidade nao encontrada!"<<endl;
 		}
-		cout<<endl;
-	}	
+	}
+	else if(busca=="ano de nascimento" or busca=="Ano de nascimento"){
+		cout<<"Digite o ano de nascimento que deseja buscar: ";
+		short escolha;
+		cin>>escolha;
+		bool encontrou=false;
+		for(int i=0;i<tamanho;i++){
+			if(lista[i].nascimento==escolha){
+				encontrou=true;
+				imprimirInfo(lista, i);
+			}
+		}
+		if(encontrou==false){
+			cout<<"Ano de nascimento nao encontrado!"<<endl;
+		}
+	}
+	else if(busca=="Genero musical" or busca=="genero musical"){
+		cout<<"Digite o genero muscial que deseja buscar: ";
+		string escolha;
+		getline(cin, escolha);
 
+		bool encontrou=false;
 
+		for(int i=0;i<tamanho;i++){
+			if(lista[i].genero==escolha){
+				encontrou=true;
+				imprimirInfo(lista, i);
+			}
+		}
+		if(encontrou==false){
+			cout<<"Genero musical nao encontrado!"<<endl;
+		}
+	}else{
+		cout<<"Busca invalida!"<<endl;
+	}
+	cout<<endl;
+}	
 
 void salvarAlteracoes(cantores lista[], int tamanho){
+	//salva as alterações de cantores adicionados ou removidos dando saída no arquivo "cantores.csv"
+	
 	ofstream saida("cantores.csv");
 	
 	saida<<"nome;sexo;nacionalidade;ano_nascimento;genero_musical"<<endl;
-		for(int i=0;i<tamanho;i++){
-			saida<<lista[i].nome<<";"
-			<<lista[i].sexo<<";"
-			<<lista[i].nacionalidade<<";"
-			<<lista[i].nascimento<<";"
-			<<lista[i].genero
-			<<endl;
-		}
-		saida.close();
-		cout<<"Alteracao salva!"<<endl;
-		cout<<endl;
+	for(int i=0;i<tamanho;i++){
+		saida<<lista[i].nome<<";"
+		<<lista[i].sexo<<";"
+		<<lista[i].nacionalidade<<";"
+		<<lista[i].nascimento<<";"
+		<<lista[i].genero
+		<<endl;
+	}
+	saida.close();
+	cout<<"Alteracao salva!"<<endl;
+	cout<<endl;
 }
 
 void visualizarDados(cantores lista[], int tamanho){
@@ -278,7 +292,7 @@ void visualizarDados(cantores lista[], int tamanho){
 	int opcao;
 	cin>>opcao;
 	
-	if(opcao==1){
+	if(opcao==1){ //exibe a lista inteira
 		for(int i=0;i<tamanho;i++){
 			cout<<"------------------------------------------------"<<endl;
 			cout<<lista[i].nome<<";"
@@ -287,9 +301,9 @@ void visualizarDados(cantores lista[], int tamanho){
 			<<lista[i].nascimento<<";"
 			<<lista[i].genero
 			<<endl;
-			}
 		}
-	else if(opcao==2){
+	}
+	else if(opcao==2){ //exibe um trecho definido por começo e fim 
 		int trechoInicial, trechoFinal;
 
 		cout<<"Trecho inicial: ";
@@ -297,11 +311,12 @@ void visualizarDados(cantores lista[], int tamanho){
 		cout<<"Trecho Final: ";
 		cin>>trechoFinal;
 
-		if(trechoInicial<1 or trechoFinal>tamanho or trechoInicial>trechoFinal){
+		if(trechoInicial<1 or trechoFinal>tamanho or trechoInicial>trechoFinal){ //se o trecho escolhido não for compatível com o tamanho da lista, a operação é finalizada
 			cout<<"Trecho nao encontrado!"<<endl;
 			return;
 		}
-		for(int i=trechoInicial-1;i<trechoFinal;i++){
+		
+		for(int i=trechoInicial-1;i<trechoFinal;i++){ //exibição do trecho escolhido
 			cout<<"------------------------------------------------"<<endl;
 			cout<<lista[i].nome<<";"
 			<<lista[i].sexo<<";"
@@ -311,8 +326,8 @@ void visualizarDados(cantores lista[], int tamanho){
 			<<endl;
 		}
 
-		}
-		cout<<endl;
+	}
+	cout<<endl;
 }
 
 void menu(){
@@ -327,40 +342,40 @@ void menu(){
 	cout<<"5- Visualizar cantores"<<endl;
 	cout<<"6- Salvar alteracoes."<<endl;
 	cout<<"7- Sair"<<endl;
-	
 }
 
 int main(){
 	ifstream entrada("cantores.csv");
 
-	if(!entrada.is_open()){
+	if(!entrada.is_open()){ //verifica se abriu 
 		cout<<"Erro ao abrir o arquivo!"<<endl;
 		return 0;
 	}
 
 	string cabecalho;
-	getline(entrada,cabecalho);
+	getline(entrada,cabecalho); //lê e ignora o cabeçalho
 
-	int capacidade=40, tamanho=0;
+	int capacidade=40, tamanho=0; //cria vetor dinâmico
 	cantores *lista=new cantores[capacidade];
 	cantores temp;
-	char lixo;	
+	char lixo;//consome os ";"
 
-	while(getline(entrada,temp.nome,';')){
+	while(getline(entrada,temp.nome,';')){ //enquanto houver cantores o programa vai ler 
 		entrada>>temp.sexo>>lixo;
 		getline(entrada,temp.nacionalidade,';');
 		entrada>>temp.nascimento>>lixo;
 		getline(entrada,temp.genero);
-						if(capacidade==tamanho){
-							cantores *novaLista=new cantores[capacidade+10];
-							copy(lista, lista + tamanho, novaLista);
-							delete[] lista;
-							lista=novaLista;
-							capacidade+=10;
-						}
-						lista[tamanho]=temp;
-						tamanho++;
-					}
+		
+		if(capacidade==tamanho){ //verifica a capacidade e aumenta em 10 espaços caso necessário
+			cantores *novaLista=new cantores[capacidade+10];
+			copy(lista, lista + tamanho, novaLista);
+			delete[] lista;
+			lista=novaLista;
+			capacidade+=10;
+		}
+		lista[tamanho]=temp;
+		tamanho++;
+	}
 				
 	int opcao;
 
@@ -369,6 +384,7 @@ int main(){
 		cin>>opcao;
 		cout<<endl;
 
+		//chama as funções 
 		if(opcao==1){
 			inserirCantor(lista, tamanho, capacidade);
 		}
@@ -404,11 +420,11 @@ int main(){
 		else{
 			cout<<"Opcao invalida!"<<endl;
 		}
-	 }while(opcao!=7);
+	
+	}while(opcao!=7);
 
-	 delete[] lista;
-	 entrada.close();
+ 	delete[] lista;
+	entrada.close();
 
-  return 0;
-
+	return 0;
 }
